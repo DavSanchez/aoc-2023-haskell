@@ -19,25 +19,22 @@ calibrationValue01 :: String -> Int
 calibrationValue01 = read . buildNumberText . filter isNumber
 
 calibrationValue02 :: String -> Int
-calibrationValue02 = read . buildNumberText . mconcat . map fromStringDigit . L.tails
+calibrationValue02 = read . buildNumberText . mconcat . map fromStringPrefix . L.tails
 
 buildNumberText :: String -> String
-buildNumberText [] = "0"
-buildNumberText [c] = replicate 2 c
+buildNumberText [] = "00"
 buildNumberText s = head s : [last s]
 
-fromStringDigit :: String -> String
-fromStringDigit [] = mempty
-fromStringDigit s@(x : _)
-  | "zero" `L.isPrefixOf` s = "0"
-  | "one" `L.isPrefixOf` s = "1"
-  | "two" `L.isPrefixOf` s = "2"
-  | "three" `L.isPrefixOf` s = "3"
-  | "four" `L.isPrefixOf` s = "4"
-  | "five" `L.isPrefixOf` s = "5"
-  | "six" `L.isPrefixOf` s = "6"
-  | "seven" `L.isPrefixOf` s = "7"
-  | "eight" `L.isPrefixOf` s = "8"
-  | "nine" `L.isPrefixOf` s = "9"
-  | isNumber x = [x]
-  | otherwise = mempty
+fromStringPrefix :: String -> String
+fromStringPrefix (x : _) | isNumber x = L.singleton x
+fromStringPrefix s | "zero" `L.isPrefixOf` s = "0"
+fromStringPrefix s | "one" `L.isPrefixOf` s = "1"
+fromStringPrefix s | "two" `L.isPrefixOf` s = "2"
+fromStringPrefix s | "three" `L.isPrefixOf` s = "3"
+fromStringPrefix s | "four" `L.isPrefixOf` s = "4"
+fromStringPrefix s | "five" `L.isPrefixOf` s = "5"
+fromStringPrefix s | "six" `L.isPrefixOf` s = "6"
+fromStringPrefix s | "seven" `L.isPrefixOf` s = "7"
+fromStringPrefix s | "eight" `L.isPrefixOf` s = "8"
+fromStringPrefix s | "nine" `L.isPrefixOf` s = "9"
+fromStringPrefix _ = mempty
