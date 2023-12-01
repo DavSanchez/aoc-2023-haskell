@@ -16,6 +16,7 @@ executable aoc2023
 
   default-extensions:
     OverloadedStrings
+    ImportQualifiedPost
     -- LambdaCase
     -- ScopedTypeVariables
     -- DisambiguateRecordFields
@@ -39,3 +40,6 @@ executable aoc2023
     -- , vector ^>=0.13.1.0
     -- -- Package `mtl`: Monad classes for transformers.
     -- , mtl ^>=2.3.1
+    -- , bytestring ^>=0.12
+    -- , text ^>=2.1
+    -- , unordered-containers
