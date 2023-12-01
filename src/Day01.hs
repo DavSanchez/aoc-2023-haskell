@@ -1,6 +1,4 @@
-{-# LANGUAGE ImportQualifiedPost #-}
-
-module Day01 where
+module Day01 (day01) where
 
 import Data.Char (isNumber)
 import Data.List qualified as L

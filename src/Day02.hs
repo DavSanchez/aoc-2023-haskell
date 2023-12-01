@@ -1,4 +1,4 @@
-module Day02 where
+module Day02 (day02) where
 
 import Paths_aoc2023 (getDataFileName)
 

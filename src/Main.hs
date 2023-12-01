@@ -1,4 +1,4 @@
-module Main where
+module Main (main) where
 
 import Day01 (day01)
 import Day02 (day02)
