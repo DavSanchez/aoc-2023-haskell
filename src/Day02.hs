@@ -12,8 +12,11 @@ import Text.ParserCombinators.ReadP (ReadP, many1, readP_to_S, satisfy, sepBy1, 
 day02 :: IO ()
 day02 = do
   inputLines <- lines <$> (getDataFileName "day02-input.txt" >>= readFile)
-  putStrLn $ "Result 1: " <> show (sum $ validGameIDs $ map fromString inputLines)
-  putStrLn $ "Result 2: " <> show (sum $ map (cubeSetPower . minimumSet . fromString) inputLines)
+  putStrLn $ "Result 1: " <> (show . sum . process01) inputLines
+  putStrLn $ "Result 2: " <> (show . sum . process02) inputLines
+  where
+    process01 = validGameIDs . map fromString
+    process02 = map (cubeSetPower . minimumSet . fromString)
 
 -- | A game has an ID and consists on a list of cube sets.
 data Game = Game
