@@ -15,22 +15,6 @@ day02 = do
   putStrLn $ "Result 1: " <> show (sum $ validGameIDs $ map fromString inputLines)
   putStrLn $ "Result 2: " <> show (sum $ map (cubeSetPower . minimumSet . fromString) inputLines)
 
--- | Parses a game from a string. See the parser combinators at the bottom of the file.
-fromString :: String -> Game
-fromString str = (fst . last) $ readP_to_S parseGame str
-
--- | Gets the valid game IDs from a list of games.
-validGameIDs :: [Game] -> [Int]
-validGameIDs = map _id . filter isGameValid
-
--- | Check if a given game is valid, i.e. all its cube sets are valid.
-isGameValid :: Game -> Bool
-isGameValid game = all isSetValid $ sets game
-
--- | Check if a given cube set is valid, i.e. it does not contain more cubes than the bag.
-isSetValid :: CubesSet -> Bool
-isSetValid cs = blue cs <= blue bag && green cs <= green bag && red cs <= red bag
-
 -- | A game has an ID and consists on a list of cube sets.
 data Game = Game
   { -- | The game ID
@@ -39,6 +23,18 @@ data Game = Game
     sets :: [CubesSet]
   }
   deriving stock (Show)
+
+-- | Parses a game from a string. See the parser combinators at the bottom of the file.
+fromString :: String -> Game
+fromString = fst . last . readP_to_S parseGame
+
+-- | Gets the valid game IDs from a list of games.
+validGameIDs :: [Game] -> [Int]
+validGameIDs = map _id . filter isGameValid
+
+-- | Check if a given game is valid, i.e. all its cube sets are valid.
+isGameValid :: Game -> Bool
+isGameValid game = all isSetValid $ sets game
 
 -- | A set of cubes has a number of blue, green and red cubes.
 data CubesSet = CubeSet
@@ -70,6 +66,10 @@ instance Monoid CubesSet where
         green = 0,
         red = 0
       }
+
+-- | Check if a given cube set is valid, i.e. it does not contain more cubes than the bag.
+isSetValid :: CubesSet -> Bool
+isSetValid cs = blue cs <= blue bag && green cs <= green bag && red cs <= red bag
 
 -- | Gets the minimum set of cubes that could have have generated the game.
 minimumSet :: Game -> CubesSet
