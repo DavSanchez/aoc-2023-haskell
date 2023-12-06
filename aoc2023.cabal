@@ -10,6 +10,7 @@ executable aoc2023
   default-language:   Haskell2010
   ghc-options:        -Wall
   default-extensions:
+    DerivingStrategies
     ImportQualifiedPost
     OverloadedStrings
 
@@ -24,6 +25,8 @@ executable aoc2023
     Day03
     Day04
     Day05
+    Day06
+    Day07
     Paths_aoc2023
 
   autogen-modules:    Paths_aoc2023
