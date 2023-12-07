@@ -76,6 +76,67 @@ mapIfInRange rngs i = if null rangeList then i else computeMapping (head rangeLi
     rangeList = filter (inRange i) (ranges rngs)
     computeMapping (Range dest src _) i' = dest + (i' - src)
 
+-- Alternative fusing intervals, which is much more efficient than brute-force (same result)
+-- This exploits the creation of a Semigroup instance for RangeMap to combine them into one,
+-- extending the intervals to cover the whole range of possible values (0..maxBound),
+-- as well as converting the input seed intervals into a RangeMap to combine.
+-- Credit: https://github.com/gruhn/advent-of-code/blob/master/2023/Day05.hs
+solve02' :: Almanac -> Int
+solve02' almanac = (minimum . map destination . ranges) seedRanges'
+  where
+    seeds' = seeds almanac
+    squashed =
+      squashedRangeMap $
+        NE.fromList $
+          map
+            (\f -> f almanac)
+            [ seedToSoilMap,
+              soilToFertilizerMap,
+              fertilizerToWaterMap,
+              waterToLightMap,
+              lightToTemperatureMap,
+              temperatureToHumidityMap,
+              humidityToLocationMap
+            ]
+    seedRanges' = rangeMapFromSeeds seeds' <> squashed
+
+rangeMapFromSeeds :: [Int] -> RangeMap
+rangeMapFromSeeds = RangeMap . go
+  where
+    go :: [Int] -> [Range]
+    go [] = []
+    go [_] = error "odd number of seeds"
+    go (src : len : rest) = Range src src len : go rest
+
+squashedRangeMap :: NE.NonEmpty RangeMap -> RangeMap
+squashedRangeMap = sconcat . fmap fillRanges
+
+fillRanges :: RangeMap -> RangeMap
+fillRanges (RangeMap rngs) =
+  let fill :: Int -> [Range] -> [Range]
+      fill index [] = [Range index index (maxBound - index)]
+      fill index (rng : rngs') =
+        let fillBefore = Range index index (source rng - index)
+            newIndex = source rng + range rng
+         in -- fill_before might be empty/negative range ==> filter out in second pass
+            fillBefore : rng : fill newIndex rngs'
+   in RangeMap $ filter ((> 0) . range) $ fill 0 $ sortOn source rngs
+
+instance Semigroup RangeMap where
+  RangeMap rangesA <> RangeMap rangesB = RangeMap $ do
+    -- compute overlap for each pair for ranges
+    Range destA srcA lenA <- rangesA
+    Range destB srcB lenB <- rangesB
+
+    let dest = destB + max 0 (destA - srcB)
+        src = srcA + max 0 (srcB - destA)
+        len = min (destA + lenA) (srcB + lenB) - max destA srcB
+
+        overlap = Range dest src len
+
+    guard $ range overlap > 0
+    return overlap
+
 -- Parser for Almanac
 parse :: String -> Almanac
 parse = fst . last . readP_to_S parseAlmanac
