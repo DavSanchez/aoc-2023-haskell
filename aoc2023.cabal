@@ -28,6 +28,7 @@ executable aoc2023
     Day06
     Day07
     Day08
+    Day09
     Paths_aoc2023
 
   autogen-modules:    Paths_aoc2023
