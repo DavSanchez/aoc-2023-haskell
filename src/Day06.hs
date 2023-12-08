@@ -6,8 +6,8 @@ import Paths_aoc2023 (getDataFileName)
 day06 :: IO ()
 day06 = do
   inputLines <- lines <$> (getDataFileName "day06-input.txt" >>= readFile)
-  putStrLn $ "Result 01: " <> (show . solve01 . parse) inputLines
-  putStrLn $ "Result 02: " <> (show . solve02 . parse2) inputLines
+  putStrLn $ "Result 1: " <> (show . solve01 . parse) inputLines
+  putStrLn $ "Result 2: " <> (show . solve02 . parse2) inputLines
 
 data Race = Race
   { durationMs :: Int,

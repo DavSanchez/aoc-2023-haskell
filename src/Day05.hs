@@ -13,8 +13,8 @@ day05 = do
   inputLines <- getDataFileName "day05-input.txt" >>= readFile
   -- putStrLn "This is what I read from input:"
   -- putStrLn $ unlines inputLines
-  putStrLn $ "Result 01: " <> (show . solve01 . parse) inputLines
-  putStrLn $ "Result 02: " <> (show . solve02 . parse) inputLines
+  putStrLn $ "Result 1: " <> (show . solve01 . parse) inputLines
+  putStrLn $ "Result 2: " <> (show . solve02 . parse) inputLines
 
 -- Almanac type
 data Almanac = Almanac
