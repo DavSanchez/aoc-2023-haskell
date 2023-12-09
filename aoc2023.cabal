@@ -32,20 +32,22 @@ executable aoc2023
     Paths_aoc2023
 
   autogen-modules:    Paths_aoc2023
-  build-depends:      base ^>=4.17.2.1
+  build-depends:
+    , base        ^>=4.17.2.1
+    , containers  ^>=0.7
 
-  -- -- Package `containers`: Brings maps, sets, trees, graphs, sequences.
-  -- , containers ^>= 0.7
-  -- -- Package `vector`: Performant, fixed length arrays.
   -- , vector ^>= 0.13
-
-  -- -- Package `split`: Functions for splitting lists.
   -- , split ^>=0.2.4
-  -- -- Package `mtl`: Monad classes for transformers.
   -- , mtl ^>=2.3.1
   -- , bytestring ^>=0.12
   -- , text ^>=2.1
   -- , unordered-containers
+
+  -- Info about dependencies:
+  -- Package `containers`: Brings maps, sets, trees, graphs, sequences.
+  -- Package `vector`: Performant, fixed length arrays.
+  -- Package `split`: Functions for splitting lists.
+  -- Package `mtl`: Monad classes for transformers.
 
   ghc-options:
 
