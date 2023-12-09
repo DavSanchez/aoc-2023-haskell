@@ -9,6 +9,11 @@ day08 = do
   inputLines <- getDataFileName "day08-input.txt" >>= readFile
   -- putStrLn "This is what I read from input:"
   putStrLn $ "Result 1: " <> (show . length . solve1 . parse) inputLines
+  -- We take the LCM (Least Common Multiple) here to avoid traversing the entire graph
+  -- in search of the solution (all paths reaching and end node at the same time).
+  -- Given all inputs will end up in an end node at some time (or this wouldn't work),
+  -- we can just take the length of the first occurrence of an end node for ewch path
+  -- and take the LCM of those. This will be the first time all paths end simultaneously.
   putStrLn $ "Result 2: " <> (show . foldl1 lcm . map length . solve2 . parse) inputLines
 
 type Sequence = String
