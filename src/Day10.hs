@@ -46,8 +46,8 @@ solve2 grd = picksTheoremForInteriorPoints areaTimes2 (length boundaryPoints)
 picksTheoremForInteriorPoints :: Int -> Int -> Int
 picksTheoremForInteriorPoints areaTimes2 boundaryPoints = (areaTimes2 - boundaryPoints + 2) `div` 2
 
--- Shoelace formula: https://en.wikipedia.org/wiki/Shoelace_formula
--- This is for getting double the area of a polygon, 2A to use in Pick's Theorem above.
+-- Shoelace formula --> https://en.wikipedia.org/wiki/Shoelace_formula
+-- This is for getting double the area of a polygon, 2A, to use in Pick's Theorem above.
 -- 2A is the determinant of all point pairs of the polygon.
 shoelaceFormula :: [Coords] -> Int
 shoelaceFormula ((x1, y1) : (x2, y2) : rest) = (x1 * y2) - (y1 * x2) + shoelaceFormula ((x2, y2) : rest)
