@@ -11,15 +11,9 @@ day10 = do
   putStrLn $ "Solution 1: " <> (show . solve1 . grid) inputLines
   putStrLn $ "Solution 2: " <> (show . solve2 . grid) inputLines
 
--- putStrLn $ "Solution 2': " <> (show . solve2') inputLines
-
 type Coords = (Int, Int)
 
 type Grid = M.Map Coords Char
-
--- data PipeDirection = NorthSouth | NorthEast | NorthWest | EastWest | SouthEast | SouthWest deriving stock (Show, Eq)
-
--- data GridElement = Invalid | Ground | StartingPosition | Pipe PipeDirection deriving stock (Show, Eq)
 
 -- >>> solve1 (grid _simpleExample)
 -- 4
