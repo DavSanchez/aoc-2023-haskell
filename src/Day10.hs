@@ -1,5 +1,6 @@
-module Day10 (day10) where
+module Day10 where
 
+import Data.List (inits)
 import Data.Map qualified as M
 import Paths_aoc2023 (getDataFileName)
 
@@ -37,6 +38,33 @@ solve2 grd = picksTheoremForInteriorPoints areaTimes2 (length boundaryPoints)
   where
     boundaryPoints = traverseGrid grd (startingCoords grd) (startingCoords grd)
     areaTimes2 = abs $ shoelaceFormula (boundaryPoints <> [head boundaryPoints])
+
+-- Using Jordan Curve Theorem? --> https://en.wikipedia.org/wiki/Jordan_curve_theorem
+-- TODO: The idea here would be:
+-- 1. Get the boundary points of the grid by traversing as in solve1.
+-- 2. Replace the boundary points with a single symbol 'X'.
+-- 3. For each line, flatten the vertices to a single 'X' occurrence (`group` and `nub`)
+-- 4. For each line, get the inits
+-- 5. For each init, count the number of 'X' if the end element is not an 'X'
+-- 6. Do a `mod` 2 on the counts to only count the points with an odd number of 'X'.
+-- 7. Sum the counts.
+solve2' :: String -> Int
+solve2' str = undefined
+
+-- >>> map countPoints $ lines _part2Example
+-- [[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,1,0],[0,0,1,1,1,1,1,1,0,1,0],[0,0,1,0,0,0,0,0,0,1,0],[0,0,1,0,0,0,0,0,0,1,0],[0,0,1,1,1,0,0,0,0,1,0],[0,0,1,1,1,0,0,1,1,1,0],[0,0,0,0,1,0,0,0,0,1,0],[0,0,0,0,0,0,0,0,0,0,0]]
+countPoints :: String -> [Int]
+countPoints str = map ((`mod` 2) . length . edgesTo . flattenKnees) rays
+  where
+    rays = tail $ inits str
+
+flattenKnees ('L' : '7' : rest) = '|' : flattenKnees rest
+flattenKnees ('F' : 'J' : rest) = '|' : flattenKnees rest
+flattenKnees (x : y : rest) = x : flattenKnees (y : rest)
+flattenKnees [x] = [x]
+flattenKnees [] = []
+
+edgesTo = filter (`elem` ['S', 'L', '7', 'F', 'J', '|']) . init
 
 -- Pick's Theorem: A = i + (b / 2) - 1 --> https://en.wikipedia.org/wiki/Pick's_theorem
 -- For 2A = 2i + b - 2
